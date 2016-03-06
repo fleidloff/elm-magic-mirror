@@ -1,1 +1,0 @@
-# elm-magic-mirror
