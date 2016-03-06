@@ -10760,17 +10760,15 @@ Elm.Elm.Actions.make = function (_elm) {
    var _op = {};
    var update = F2(function (action,model) {
       var _p0 = action;
-      switch (_p0.ctor)
-      {case "NoOp": return {ctor: "_Tuple2",_0: model,_1: $Effects.none};
-         case "UpdateString": return {ctor: "_Tuple2",_0: _U.update(model,{text: _p0._0}),_1: $Effects.none};
-         case "UpdateReverse": return {ctor: "_Tuple2",_0: _U.update(model,{reverse: _p0._0}),_1: $Effects.none};
-         default: return {ctor: "_Tuple2",_0: _U.update(model,{time: _p0._0}),_1: $Effects.none};}
+      if (_p0.ctor === "NoOp") {
+            return {ctor: "_Tuple2",_0: model,_1: $Effects.none};
+         } else {
+            return {ctor: "_Tuple2",_0: _U.update(model,{time: _p0._0}),_1: $Effects.none};
+         }
    });
    var UpdateTime = function (a) {    return {ctor: "UpdateTime",_0: a};};
-   var UpdateReverse = function (a) {    return {ctor: "UpdateReverse",_0: a};};
-   var UpdateString = function (a) {    return {ctor: "UpdateString",_0: a};};
    var NoOp = {ctor: "NoOp"};
-   return _elm.Elm.Actions.values = {_op: _op,NoOp: NoOp,UpdateString: UpdateString,UpdateReverse: UpdateReverse,UpdateTime: UpdateTime,update: update};
+   return _elm.Elm.Actions.values = {_op: _op,NoOp: NoOp,UpdateTime: UpdateTime,update: update};
 };
 Elm.Elm = Elm.Elm || {};
 Elm.Elm.Elements = Elm.Elm.Elements || {};
@@ -10875,8 +10873,8 @@ Elm.Elm.Time.make = function (_elm) {
    var Lunch = {ctor: "Lunch"};
    var Morning = {ctor: "Morning"};
    var toDayTime = function (h) {
-      return _U.cmp(h,8) < 1 ? Night : _U.cmp(h,12) < 1 ? Morning : _U.cmp(h,16) < 1 ? Lunch : _U.cmp(h,18) < 1 ? Afternoon : _U.cmp(h,
-      23) < 1 ? Evening : Night;
+      return _U.cmp(h,7) < 1 ? Night : _U.cmp(h,11) < 1 ? Morning : _U.cmp(h,14) < 1 ? Lunch : _U.cmp(h,18) < 1 ? Afternoon : _U.cmp(h,
+      22) < 1 ? Evening : Night;
    };
    var currentSalutation = function (t) {
       var date$ = $Date.fromTime(t);

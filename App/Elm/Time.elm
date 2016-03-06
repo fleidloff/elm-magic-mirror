@@ -37,11 +37,11 @@ type DayTime
   | Night 
 
 toDayTime h =
-  if h <= 8 then Night else
-  if h <= 12 then Morning else
-  if h <= 16 then Lunch else 
+  if h <= 7 then Night else
+  if h <= 11 then Morning else
+  if h <= 14 then Lunch else 
   if h <= 18 then Afternoon else
-  if h <= 23 then Evening 
+  if h <= 22 then Evening 
   else Night
     
 
