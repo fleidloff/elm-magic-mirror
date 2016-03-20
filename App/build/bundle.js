@@ -10737,8 +10737,8 @@ Elm.Elm.Model.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
    var _op = {};
-   var model = {text: "Why u no model?",reverse: true,time: 0.0};
-   var Model = F3(function (a,b,c) {    return {text: a,reverse: b,time: c};});
+   var model = {text: "Why u no model?",time: 0.0,weather: {temp: 279.15}};
+   var Model = F3(function (a,b,c) {    return {text: a,time: b,weather: c};});
    return _elm.Elm.Model.values = {_op: _op,Model: Model,model: model};
 };
 Elm.Elm = Elm.Elm || {};
@@ -10941,6 +10941,32 @@ Elm.Elm.Init.make = function (_elm) {
    return _elm.Elm.Init.values = {_op: _op,init: init};
 };
 Elm.Elm = Elm.Elm || {};
+Elm.Elm.Weather = Elm.Elm.Weather || {};
+Elm.Elm.Weather.make = function (_elm) {
+   "use strict";
+   _elm.Elm = _elm.Elm || {};
+   _elm.Elm.Weather = _elm.Elm.Weather || {};
+   if (_elm.Elm.Weather.values) return _elm.Elm.Weather.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var _op = {};
+   var kelvinToCelsius = function (t) {    return $Basics.round(t - 273.15);};
+   var htmlList = function (model) {
+      return _U.list([A2($Html.div,
+      _U.list([]),
+      _U.list([$Html.text("temperature: "),$Html.text($Basics.toString(kelvinToCelsius(model.weather.temp))),$Html.text(" °C")]))]);
+   };
+   var weather = function (model) {    return A2($Html.div,_U.list([$Html$Attributes.$class("widget")]),htmlList(model));};
+   return _elm.Elm.Weather.values = {_op: _op,weather: weather,htmlList: htmlList,kelvinToCelsius: kelvinToCelsius};
+};
+Elm.Elm = Elm.Elm || {};
 Elm.Elm.View = Elm.Elm.View || {};
 Elm.Elm.View.make = function (_elm) {
    "use strict";
@@ -10954,6 +10980,7 @@ Elm.Elm.View.make = function (_elm) {
    $Elm$Elements = Elm.Elm.Elements.make(_elm),
    $Elm$Model = Elm.Elm.Model.make(_elm),
    $Elm$Time = Elm.Elm.Time.make(_elm),
+   $Elm$Weather = Elm.Elm.Weather.make(_elm),
    $Html = Elm.Html.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
@@ -10961,18 +10988,16 @@ Elm.Elm.View.make = function (_elm) {
    $Signal = Elm.Signal.make(_elm);
    var _op = {};
    var view = F2(function (address,model) {
-      return A2($Html.div,
-      _U.list([]),
-      _U.list([$Elm$Elements.gContainer(_U.list([$Elm$Elements.row(_U.list([A2($Elm$Elements.col,6,_U.list([$Html.text("weather")]))
-                                                                           ,A2($Elm$Elements.col,6,_U.list([$Elm$Time.time(model)]))]))
-                                                ,$Elm$Elements.bottom(_U.list([$Elm$Elements.row(_U.list([A2($Elm$Elements.col,
-                                                                                                         6,
-                                                                                                         _U.list([$Html.text("http://api.openweathermap.org/data/2.5/weather?id=2848756&appid=1465be17ba0ad9f9f2801b5bcbb79e0f")
-                                                                                                                 ,$Html.text("http://openweathermap.org/weather-conditions")
-                                                                                                                 ,$Html.text("Countdown Timer, Weather, Todos, free text, football scores, news, spotify player playing info, shopping list")]))
-                                                                                                         ,A2($Elm$Elements.col,
-                                                                                                         6,
-                                                                                                         _U.list([$Html.text("...")]))]))]))]))]));
+      return $Elm$Elements.gContainer(_U.list([$Elm$Elements.row(_U.list([A2($Elm$Elements.col,6,_U.list([$Elm$Weather.weather(model)]))
+                                                                         ,A2($Elm$Elements.col,6,_U.list([$Elm$Time.time(model)]))]))
+                                              ,$Elm$Elements.bottom(_U.list([$Elm$Elements.row(_U.list([A2($Elm$Elements.col,
+                                                                                                       6,
+                                                                                                       _U.list([$Html.text("http://api.openweathermap.org/data/2.5/weather?id=2848756&appid=1465be17ba0ad9f9f2801b5bcbb79e0f")
+                                                                                                               ,$Html.text("http://openweathermap.org/weather-conditions")
+                                                                                                               ,$Html.text("Countdown Timer, Weather, Todos, free text, football scores, news, spotify player playing info, shopping list")]))
+                                                                                                       ,A2($Elm$Elements.col,
+                                                                                                       6,
+                                                                                                       _U.list([$Html.text("birthdays + upcoming birthdays")]))]))]))]));
    });
    return _elm.Elm.View.values = {_op: _op,view: view};
 };

@@ -7,28 +7,26 @@ import Elm.Actions exposing (Action)
 import Elm.Model exposing (Model)
 import Elm.Elements exposing (gContainer, row, col, bottom)
 import Elm.Time exposing (time)
+import Elm.Weather exposing (weather)
 
 view : Address Action -> Model -> Html
 view address model =
-      div [] 
-        [ gContainer 
-            [ row 
+    gContainer 
+        [ row 
+            [ col 6
+                [ weather model ]
+            , col 6 
+                [ time model ]
+            ]
+        , bottom
+            [ row
                 [ col 6
-                    [ text "weather" 
+                    [ text "http://api.openweathermap.org/data/2.5/weather?id=2848756&appid=1465be17ba0ad9f9f2801b5bcbb79e0f"
+                    , text "http://openweathermap.org/weather-conditions"
+                    , text "Countdown Timer, Weather, Todos, free text, football scores, news, spotify player playing info, shopping list" 
                     ]
                 , col 6 
-                    [ time model ]
-                ]
-            , bottom
-                [ row
-                    [ col 6
-                        [ text "http://api.openweathermap.org/data/2.5/weather?id=2848756&appid=1465be17ba0ad9f9f2801b5bcbb79e0f"
-                        , text "http://openweathermap.org/weather-conditions"
-                        , text "Countdown Timer, Weather, Todos, free text, football scores, news, spotify player playing info, shopping list" 
-                        ]
-                    , col 6 
-                        [ text "..." ]
-                    ]
+                    [ text "birthdays + upcoming birthdays" ]
                 ]
             ]
         ]
