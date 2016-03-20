@@ -73,10 +73,10 @@ currentDate : Float -> String
 currentDate t =
   let 
     date' = fromTime t
-    day' = toString (Date.day date')
+    day' = toString <| Date.day date'
     dayOfWeek = germanDayOfWeek <| Date.dayOfWeek date'
     month' = toString <| monthToNumber <| Date.month date'
-    year' = leadingZero (Date.year date')
+    year' = leadingZero <| Date.year date'
     now = dayOfWeek ++ ", " ++ day' ++ "." ++ month' ++ "." ++ year'
   in 
     now
@@ -107,5 +107,8 @@ monthToNumber month =
     Date.Nov -> 11
     Date.Dec -> 12
 
-leadingZero number = if number < 10 then "0" ++ toString number else toString number
-
+leadingZero number = 
+  if number < 10 then 
+    "0" ++ toString number 
+  else 
+    toString number

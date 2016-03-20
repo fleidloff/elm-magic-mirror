@@ -10,10 +10,11 @@ import Task
 import Effects exposing (Never, Effects)
 import Elm.Time exposing (timeInput)
 import Elm.Init exposing (init)
+import Elm.Weather exposing (weatherInput)
 
 
 app =
-    StartApp.start { init = init, view = view, update = update, inputs = [ timeInput ] }
+    StartApp.start { init = init, view = view, update = update, inputs = [ timeInput, weatherInput ] }
 
 main =
     app.html

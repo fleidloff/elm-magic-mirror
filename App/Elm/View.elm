@@ -9,6 +9,7 @@ import Elm.Elements exposing (gContainer, row, col, bottom)
 import Elm.Time exposing (time)
 import Elm.Weather exposing (weather)
 
+
 view : Address Action -> Model -> Html
 view address model =
     gContainer 
