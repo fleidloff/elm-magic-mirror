@@ -11041,7 +11041,7 @@ Elm.Elm.Types.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
    var _op = {};
-   var Weather = function (a) {    return {temp: a};};
+   var Weather = F3(function (a,b,c) {    return {temp: a,sunset: b,sunrise: c};});
    return _elm.Elm.Types.values = {_op: _op,Weather: Weather};
 };
 Elm.Elm = Elm.Elm || {};
@@ -11060,7 +11060,7 @@ Elm.Elm.Model.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
    var _op = {};
-   var model = {text: "Why u no model?",time: 0.0,weather: {temp: 0.0}};
+   var model = {text: "Why u no model?",time: 0.0,weather: {temp: 0.0,sunrise: 0,sunset: 0}};
    var Model = F3(function (a,b,c) {    return {text: a,time: b,weather: c};});
    return _elm.Elm.Model.values = {_op: _op,Model: Model,model: model};
 };
@@ -11090,7 +11090,8 @@ Elm.Elm.Actions.make = function (_elm) {
          case "UpdateTime": return {ctor: "_Tuple2",_0: _U.update(model,{time: _p0._0}),_1: $Effects.none};
          default: var _p1 = _p0._0;
            var weather = model.weather;
-           var newWeather = _U.update(weather,{temp: A2($Maybe.withDefault,weather,_p1).temp});
+           var w = A2($Maybe.withDefault,weather,_p1);
+           var newWeather = _U.update(weather,{temp: w.temp,sunrise: w.sunrise,sunset: w.sunset});
            var d = A2($Debug.log,"weather",_p1);
            return {ctor: "_Tuple2",_0: _U.update(model,{weather: newWeather}),_1: $Effects.none};}
    });
@@ -11192,9 +11193,7 @@ Elm.Elm.Time.make = function (_elm) {
       var hour$ = $Basics.toString($Date.hour(date$));
       var minute$ = leadingZero($Date.minute(date$));
       var second$ = leadingZero($Date.second(date$));
-      var now = A2($Basics._op["++"],
-      hour$,
-      A2($Basics._op["++"],":",A2($Basics._op["++"],minute$,A2($Basics._op["++"],":",A2($Basics._op["++"],second$," Uhr")))));
+      var now = A2($Basics._op["++"],hour$,A2($Basics._op["++"],":",A2($Basics._op["++"],minute$,A2($Basics._op["++"],":",second$))));
       return now;
    };
    var Night = {ctor: "Night"};
@@ -11286,6 +11285,7 @@ Elm.Elm.Weather.make = function (_elm) {
    $Effects = Elm.Effects.make(_elm),
    $Elm$Actions = Elm.Elm.Actions.make(_elm),
    $Elm$Tasks$Ajax = Elm.Elm.Tasks.Ajax.make(_elm),
+   $Elm$Time = Elm.Elm.Time.make(_elm),
    $Elm$Types = Elm.Elm.Types.make(_elm),
    $Html = Elm.Html.make(_elm),
    $Html$Attributes = Elm.Html.Attributes.make(_elm),
@@ -11296,7 +11296,11 @@ Elm.Elm.Weather.make = function (_elm) {
    $Signal = Elm.Signal.make(_elm),
    $Time = Elm.Time.make(_elm);
    var _op = {};
-   var weatherData = A2($Json$Decode.at,_U.list(["main"]),A2($Json$Decode.object1,$Elm$Types.Weather,A2($Json$Decode._op[":="],"temp",$Json$Decode.$float)));
+   var weatherData = A4($Json$Decode.object3,
+   $Elm$Types.Weather,
+   A2($Json$Decode.at,_U.list(["main","temp"]),$Json$Decode.$float),
+   A2($Json$Decode.at,_U.list(["sys","sunset"]),$Json$Decode.$int),
+   A2($Json$Decode.at,_U.list(["sys","sunrise"]),$Json$Decode.$int));
    var getWeather = A3($Elm$Tasks$Ajax.get,
    "http://api.openweathermap.org/data/2.5/weather?id=2848756&appid=1465be17ba0ad9f9f2801b5bcbb79e0f",
    weatherData,
@@ -11311,7 +11315,15 @@ Elm.Elm.Weather.make = function (_elm) {
          } else {
             return _U.list([A2($Html.div,
             _U.list([]),
-            _U.list([$Html.text("Temperatur: "),$Html.text($Basics.toString(kelvinToCelsius(model.weather.temp))),$Html.text(" °C")]))]);
+            _U.list([$Html.text("Temperatur: ")
+                    ,$Html.text($Basics.toString(kelvinToCelsius(model.weather.temp)))
+                    ,$Html.text(" °C")
+                    ,A2($Html.br,_U.list([]),_U.list([]))
+                    ,$Html.text("Sonnenaufgang: ")
+                    ,$Html.text($Elm$Time.currentTime($Basics.toFloat(model.weather.sunrise * 1000)))
+                    ,A2($Html.br,_U.list([]),_U.list([]))
+                    ,$Html.text("Sonnenuntergang: ")
+                    ,$Html.text($Elm$Time.currentTime($Basics.toFloat(model.weather.sunset * 1000)))]))]);
          }
    };
    var weather = function (model) {    return A2($Html.div,_U.list([$Html$Attributes.$class("widget")]),htmlList(model));};

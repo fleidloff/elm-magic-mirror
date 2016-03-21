@@ -1,6 +1,6 @@
 module Elm.Weather where
 
-import Html exposing (text, div)
+import Html exposing (text, div, br)
 import Html.Attributes exposing (class)
 import Elm.Tasks.Ajax as Ajax
 import Elm.Actions as Actions
@@ -8,6 +8,7 @@ import Json.Decode as Json exposing ((:=))
 import Elm.Types exposing (Weather)
 import Time exposing (..)
 import Effects exposing (Effects)
+import Elm.Time exposing (currentTime)
 
 weather model =
   div [ class "widget" ] <| htmlList model
@@ -20,6 +21,12 @@ htmlList model =
         [ text "Temperatur: "
         , text <| toString <| kelvinToCelsius model.weather.temp
         , text " °C"
+        , br [] []
+        , text "Sonnenaufgang: "
+        , text <| currentTime <| toFloat <| model.weather.sunrise * 1000
+        , br [] []
+        , text "Sonnenuntergang: "
+        , text <| currentTime <| toFloat <| model.weather.sunset * 1000 
         ]
       ]
 
@@ -38,6 +45,7 @@ getWeather =
 
 weatherData : Json.Decoder Weather
 weatherData =
-  Json.at ["main"] <|
-    Json.object1 Weather
-      ("temp" := Json.float)
+  Json.object3 Weather
+    (Json.at ["main", "temp"] Json.float)
+    (Json.at ["sys", "sunset"] Json.int)
+    (Json.at ["sys", "sunrise"] Json.int)

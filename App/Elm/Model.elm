@@ -14,5 +14,7 @@ model =
   , time = 0.0
   , weather = 
     { temp = 0.0
+    , sunrise = 0
+    , sunset = 0
     } 
   }

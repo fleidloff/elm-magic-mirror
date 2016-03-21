@@ -25,6 +25,7 @@ update action model =
       let
         d = Debug.log "weather" maybeWeather
         weather = model.weather
-        newWeather = { weather | temp = (Maybe.withDefault weather maybeWeather).temp }
+        w = (Maybe.withDefault weather maybeWeather)
+        newWeather = { weather | temp = w.temp, sunrise = w.sunrise, sunset = w.sunset }
       in
         ({ model | weather = newWeather }, Effects.none)

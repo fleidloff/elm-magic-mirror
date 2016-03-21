@@ -27,7 +27,8 @@ htmlList model =
 timeInput = 
   Signal.map updateCurrentTime (Time.every Time.second)
 
-updateCurrentTime t = Actions.UpdateTime <| t
+updateCurrentTime t = 
+  Actions.UpdateTime <| t
 
 type DayTime
   = Morning
@@ -65,7 +66,7 @@ currentTime t =
     hour' = toString <| Date.hour date'
     minute' = leadingZero <| Date.minute date'
     second' = leadingZero <| Date.second date'
-    now = hour' ++ ":" ++ minute' ++ ":" ++ second' ++ " Uhr"
+    now = hour' ++ ":" ++ minute' ++ ":" ++ second'
   in 
     now
 
