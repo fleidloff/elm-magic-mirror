@@ -6,11 +6,14 @@ import Debug
 import Graphics.Element exposing (show, Element)
 import Elm.Actions as Actions
 import Html exposing (text, div, br)
-import Html.Attributes exposing (class)
+import Elm.Elements exposing (widget)
+import Task
+import TaskTutorial
+import Effects
 
 
 time model =
-  div [ class "widget" ] <| htmlList model
+  widget <| htmlList model
 
 htmlList model =
   case model.time of
@@ -29,6 +32,8 @@ timeInput =
 
 updateCurrentTime t = 
   Actions.UpdateTime <| t
+
+getCurrentTime = Effects.task <| Task.map Actions.UpdateTime ( TaskTutorial.getCurrentTime )
 
 type DayTime
   = Morning
@@ -81,6 +86,14 @@ currentDate t =
     now = dayOfWeek ++ ", " ++ day' ++ "." ++ month' ++ "." ++ year'
   in 
     now
+
+currentMonth : Float -> Int
+currentMonth t =
+  let 
+    date' = fromTime t
+    month' = monthToNumber <| Date.month date'
+  in 
+    month'
 
 germanDayOfWeek : Date.Day -> String
 germanDayOfWeek dayOfWeek =

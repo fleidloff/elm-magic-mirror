@@ -1,20 +1,29 @@
 module Elm.Model where
 
-import Elm.Types exposing (Weather)
-
 type alias Model = 
-  { text: String
-  , time: Float 
+  { time: Float 
   , weather: Weather
+  , froodle: String
+  , birthdays: String
   }
+
+type alias 
+  Weather =
+    { temp: Float
+    , sunset: Int
+    , sunrise: Int 
+    , name: String
+    }
 
 model : Model
 model = 
-  { text = "Why u no model?"
-  , time = 0.0
+  { time = 0.0
   , weather = 
     { temp = 0.0
     , sunrise = 0
     , sunset = 0
+    , name = ""
     } 
+  , froodle = ""
+  , birthdays = ""
   }

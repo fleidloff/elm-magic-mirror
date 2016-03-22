@@ -5,29 +5,30 @@ import Html.Attributes exposing (class)
 import Elm.Tasks.Ajax as Ajax
 import Elm.Actions as Actions
 import Json.Decode as Json exposing ((:=))
-import Elm.Types exposing (Weather)
+import Elm.Model exposing (Weather)
 import Time exposing (..)
 import Effects exposing (Effects)
 import Elm.Time exposing (currentTime)
+import Elm.Elements exposing (widget)
 
 weather model =
-  div [ class "widget" ] <| htmlList model
+  widget <| htmlList model
 
 htmlList model =
   case model.weather.temp of
-    0.0 -> [ div [] [] ]
+    0.0 -> [ ]
     _ ->
-      [ div [] 
-        [ text "Temperatur: "
-        , text <| toString <| kelvinToCelsius model.weather.temp
-        , text " °C"
-        , br [] []
-        , text "Sonnenaufgang: "
-        , text <| currentTime <| toFloat <| model.weather.sunrise * 1000
-        , br [] []
-        , text "Sonnenuntergang: "
-        , text <| currentTime <| toFloat <| model.weather.sunset * 1000 
-        ]
+      [ text "Temperatur: "
+      , text <| toString <| kelvinToCelsius model.weather.temp
+      , text " °C"
+      , br [] []
+      , text "Sonnenaufgang: "
+      , text <| currentTime <| toFloat <| model.weather.sunrise * 1000
+      , br [] []
+      , text "Sonnenuntergang: "
+      , text <| currentTime <| toFloat <| model.weather.sunset * 1000
+      , br [] []
+      , text <| model.weather.name 
       ]
 
 kelvinToCelsius t =
@@ -45,7 +46,8 @@ getWeather =
 
 weatherData : Json.Decoder Weather
 weatherData =
-  Json.object3 Weather
+  Json.object4 Weather
     (Json.at ["main", "temp"] Json.float)
     (Json.at ["sys", "sunset"] Json.int)
     (Json.at ["sys", "sunrise"] Json.int)
+    (Json.at ["name"] Json.string)

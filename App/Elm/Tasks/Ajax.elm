@@ -9,3 +9,9 @@ get url decoder action =
     |> Task.toMaybe
     |> Task.map action
     |> Effects.task
+
+getString url action = 
+  Http.getString url 
+    |> Task.toMaybe
+    |> Task.map action
+    |> Effects.task

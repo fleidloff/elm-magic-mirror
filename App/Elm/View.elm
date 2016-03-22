@@ -8,6 +8,8 @@ import Elm.Model exposing (Model)
 import Elm.Elements exposing (gContainer, row, col, bottom)
 import Elm.Time exposing (time)
 import Elm.Weather exposing (weather)
+import Elm.Froodle exposing (froodle)
+import Elm.Birthdays exposing (birthdays)
 
 
 view : Address Action -> Model -> Html
@@ -22,12 +24,9 @@ view address model =
         , bottom
             [ row
                 [ col 6
-                    [ text "http://api.openweathermap.org/data/2.5/weather?id=2848756&appid=1465be17ba0ad9f9f2801b5bcbb79e0f"
-                    , text "http://openweathermap.org/weather-conditions"
-                    , text "Countdown Timer, Weather, Todos, free text, football scores, news, spotify player playing info, shopping list" 
-                    ]
+                    [ birthdays model ]
                 , col 6 
-                    [ text "birthdays + upcoming birthdays" ]
+                    [ froodle model ]
                 ]
             ]
         ]

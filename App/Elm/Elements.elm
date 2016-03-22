@@ -15,3 +15,5 @@ col number =
     div [ class className ]
 
 gContainer = div [ style [ ("width", "100%") ] ]
+
+widget = div [ class "widget" ]
